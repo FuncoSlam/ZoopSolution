@@ -13,9 +13,9 @@ namespace Zoop
 
 		private bool activeState = false;
 
-		private GravObject[] GetActiveState()
+		private GravObject[] GetState(bool desireActive = true)
 		{
-			if (activeState)
+			if (activeState == desireActive)
 			{
 				return systemState1;
 			}
@@ -30,6 +30,6 @@ namespace Zoop
 			activeState = !activeState;
 		}
 
-		GravObject test;
+		
 	}
 }
