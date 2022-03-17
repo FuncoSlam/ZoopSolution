@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using static Zoop.CustomMath;
 using Raylib_cs;
 
 namespace Zoop
@@ -14,9 +15,7 @@ namespace Zoop
 
 		public Vector2 Velocity { get; set; }
 		public Color Color { get; set; }
-
-		private float radius = 0f;
-		public float Radius { get => GetRadius(); }
+		public float Radius { get; }
 
 		public GravObject(float Mass, Vector2 Position, Vector2 Velocity)
 		{
@@ -24,6 +23,7 @@ namespace Zoop
 			this.Position = Position;
 			this.Velocity = Velocity;
 			this.Color = Color.RAYWHITE;
+			this.Radius = (float)Math.Pow(3f * Mass / (4 * Math.PI), 1/3);
 		}
 
 		public GravObject(float Mass, Vector2 Position, Vector2 Velocity, Color Color)
@@ -32,15 +32,31 @@ namespace Zoop
 			this.Position = Position;
 			this.Velocity = Velocity;
 			this.Color = Color;
+			this.Radius = (float)Math.Sqrt(3f * Mass / (4 * Math.PI));
 		}
 
-		private float GetRadius()
+		public GravObject(List<GravObject> bodies)
 		{
-			if (radius == 0f)
+			this.Mass = 0;
+			this.Position = new();
+			this.Velocity = new();
+			if (bodies.Count > 0)
 			{
-				radius = (float)Math.Sqrt(3f * Mass / (4 * Math.PI));
+				this.Color = bodies[0].Color;
 			}
-			return radius;
+			else
+			{
+				this.Color = Color.RAYWHITE;
+			}
+
+			foreach (GravObject body in bodies)
+			{
+				float massRatio = this.Mass / body.Mass;
+				this.Position = Lerp(body.Position, this.Position, massRatio);
+				this.Velocity = Lerp(body.Velocity, this.Velocity, massRatio);
+				this.Mass += body.Mass;
+			}
+			this.Radius = (float)Math.Sqrt(3f * Mass / (4 * Math.PI));
 		}
 	}
 }
