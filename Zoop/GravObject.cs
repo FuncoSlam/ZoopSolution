@@ -1,62 +1,76 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using static Zoop.CustomMath;
 using Raylib_cs;
 
-namespace Zoop
+namespace Zoop;
+
+internal struct GravObject
 {
-	internal struct GravObject
+
+	public float Mass { get; init; }
+
+	public Vector2 Position { get; set; }
+
+	public Vector2 Velocity { get; set; }
+	public Color Color { get; set; }
+	public float Radius { get; }
+
+	public GravObject(float Mass, Vector2 Position, Vector2 Velocity)
 	{
+		this.Mass = Mass;
+		this.Position = Position;
+		this.Velocity = Velocity;
+		this.Color = Color.RAYWHITE;
+		this.Radius = GetRadius(Mass);
+	}
 
-		public float Mass { get; init; }
+	public GravObject(float Mass, Vector2 Position, Vector2 Velocity, Color Color)
+	{
+		this.Mass = Mass;
+		this.Position = Position;
+		this.Velocity = Velocity;
+		this.Color = Color;
+		this.Radius = GetRadius(Mass);
+	}
 
-		public Vector2 Position { get; set; }
-
-		public Vector2 Velocity { get; set; }
-		public Color Color { get; set; }
-		public float Radius { get; }
-
-		public GravObject(float Mass, Vector2 Position, Vector2 Velocity)
+	public GravObject(List<GravObject> bodies)
+	{
+		this.Mass = 0;
+		this.Position = new();
+		this.Velocity = new();
+		if (bodies.Count > 0)
 		{
-			this.Mass = Mass;
-			this.Position = Position;
-			this.Velocity = Velocity;
+			GravObject largestBody = new();
+			for (int i = 0; i < bodies.Count; i++)
+			{
+				if (bodies[i].Mass > largestBody.Mass)
+				{
+					largestBody = bodies[i];
+				}
+			}
+			this.Color = largestBody.Color;
+		}
+		else
+		{
 			this.Color = Color.RAYWHITE;
-			this.Radius = (float)Math.Pow(3f * Mass / (4 * Math.PI), 1/3);
 		}
 
-		public GravObject(float Mass, Vector2 Position, Vector2 Velocity, Color Color)
+		for (int i = 0; i < bodies.Count; i++)
 		{
-			this.Mass = Mass;
-			this.Position = Position;
-			this.Velocity = Velocity;
-			this.Color = Color;
-			this.Radius = (float)Math.Sqrt(3f * Mass / (4 * Math.PI));
+			float massRatio = this.Mass / (this.Mass + bodies[i].Mass);
+			this.Position = Lerp(bodies[i].Position, this.Position, massRatio);
+			this.Velocity = Lerp(bodies[i].Velocity, this.Velocity, massRatio);
+			this.Mass += bodies[i].Mass;
 		}
 
-		public GravObject(List<GravObject> bodies)
-		{
-			this.Mass = 0;
-			this.Position = new();
-			this.Velocity = new();
-			if (bodies.Count > 0)
-			{
-				this.Color = bodies[0].Color;
-			}
-			else
-			{
-				this.Color = Color.RAYWHITE;
-			}
+		this.Radius = GetRadius(Mass);
+	}
 
-			foreach (GravObject body in bodies)
-			{
-				float massRatio = this.Mass / body.Mass;
-				this.Position = Lerp(body.Position, this.Position, massRatio);
-				this.Velocity = Lerp(body.Velocity, this.Velocity, massRatio);
-				this.Mass += body.Mass;
-			}
-			this.Radius = (float)Math.Sqrt(3f * Mass / (4 * Math.PI));
-		}
+	private static float GetRadius(float Mass)
+	{
+		double temp = 3f * Mass / (4 * Math.PI);
+		double radius = Math.Pow(temp, 1d / 3d);
+		return (float)radius;
 	}
 }
+

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Raylib_cs;
+﻿using Raylib_cs;
 using static Raylib_cs.Raylib;
 using System.Numerics;
 
@@ -25,7 +20,7 @@ internal class Renderer
 	static Renderer()
 	{
 		InitWindow(windowWidth, windowHeight, "Gravity System");
-		SetTargetFPS(120);
+		SetTargetFPS(500);
 		BeginDrawing();
 		ClearBackground(backgroundColor);
 		EndDrawing();
@@ -48,6 +43,7 @@ internal class Renderer
 			camera.target = GetScreenToWorld2D(mousePosDelta + camera.offset, camera);
 
 		float totalMassInSystem = 0f;
+		Vector2 totalMomentumInSystem = new();
 
 		BeginMode2D(camera);
 		for (int i = 0; i < Bodies.Count; i++)
@@ -55,6 +51,7 @@ internal class Renderer
 			GravObject body = Bodies[i];
 
 			totalMassInSystem += body.Mass;
+			totalMomentumInSystem += body.Velocity * body.Mass;
 
 			DrawCircle((int)body.Position.X, (int)body.Position.Y, body.Radius, body.Color);
 		}
@@ -63,11 +60,11 @@ internal class Renderer
 
 		DrawText(
 			$"Camera Target: ({camera.target.X.ToString("n2")}, {camera.target.Y.ToString("n2")})\n" +
-			$"Camera Offset: ({camera.offset.X.ToString("n2")}, {camera.offset.Y.ToString("n2")})\n" +
 			$"Mouse Position: ({GetMousePosition().X}, {GetMousePosition().Y})\n" +
 			$"Zoom Level: {camera.zoom.ToString("n2")}\n" +
-			$"FPS: {(1f / GetFrameTime()).ToString("n2")}\n" +
-			$"Total Mass: {totalMassInSystem}",
+			$"FPS: {(isPaused ? "PAUSED" : (1f / GetFrameTime()).ToString("n2"))}\n" +
+			$"Total Mass: {totalMassInSystem}\n" +
+			$"Total Momentum: {totalMomentumInSystem}",
 			14, 14, 20, Color.BLACK);
 
 
