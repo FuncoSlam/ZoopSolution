@@ -9,7 +9,7 @@ internal class Renderer
 	const int windowWidth = 1360, windowHeight = 720;
 
 	static Camera2D camera = new(new Vector2(windowWidth / 2, windowHeight / 2), Vector2.Zero, 0f, 1f);
-	static float camSpeed = 20f;
+	static float camSpeed = 2f;
 	static float zoomSpeed = 0.3f;
 	static float minZoom = 0.1f;
 	static Vector2 prevMousePos = GetMousePosition();
@@ -40,7 +40,7 @@ internal class Renderer
 		prevMousePos = mousePos;
 
 		if (IsMouseButtonDown(MouseButton.MOUSE_MIDDLE_BUTTON))
-			camera.target = GetScreenToWorld2D(mousePosDelta + camera.offset, camera);
+			camera.target = GetScreenToWorld2D(mousePosDelta * camSpeed + camera.offset, camera);
 
 		float totalMassInSystem = 0f;
 		Vector2 totalMomentumInSystem = new();
