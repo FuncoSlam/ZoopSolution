@@ -20,7 +20,7 @@ internal class Renderer
 	static Renderer()
 	{
 		InitWindow(windowWidth, windowHeight, "Gravity System");
-		SetTargetFPS(500);
+		SetTargetFPS(120);
 		BeginDrawing();
 		ClearBackground(backgroundColor);
 		EndDrawing();

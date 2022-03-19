@@ -6,18 +6,24 @@ using Raylib_cs;
 
 class Program
 {
-	public static void Main()
+	public static void Main(string[] args)
 	{
 		GravSystem system = new();
 		Random rand = new();
 		Renderer renderer = new();
 
+		int objectsToSpawn = 100;
+		if (args.Length > 0)
+		{
+			int.TryParse(args[0], out objectsToSpawn);
+		}
+
 		float positionVariance = 1000f;
-		float velocityVariance = 1f;
-		for (int i = 0; i < 1000; i++)
+		float velocityVariance = 2f;
+		for (int i = 0; i < objectsToSpawn; i++)
 		{
 			system.Insert(new GravObject(
-				rand.NextSingle() * 1000f,
+				rand.NextSingle() * 10000f,
 				new Vector2(
 					rand.NextSingle() * positionVariance - positionVariance / 2f, 
 					rand.NextSingle() * positionVariance - positionVariance / 2f),
@@ -27,7 +33,7 @@ class Program
 				GetRandomColor()));
 		}
 
-		system.TimeStep = 0.1f;
+		system.TimeStep = 1f;
 		bool running = true;
 		while (running)
 		{
