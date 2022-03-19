@@ -12,20 +12,22 @@ class Program
 		Random rand = new();
 		Renderer renderer = new();
 
-
-		float positionVariance = 500f;
+		float positionVariance = 1000f;
 		float velocityVariance = 1f;
-		for (int i = 0; i < 100; i++)
+		for (int i = 0; i < 1000; i++)
 		{
 			system.Insert(new GravObject(
 				rand.NextSingle() * 1000f,
-				new Vector2(rand.NextSingle() * positionVariance - positionVariance / 2f, rand.NextSingle() * positionVariance - positionVariance / 2f),
-				new Vector2(rand.NextSingle() * velocityVariance - velocityVariance / 2f, rand.NextSingle() * velocityVariance - velocityVariance / 2f),
-				GetRandomColor()
-				));
+				new Vector2(
+					rand.NextSingle() * positionVariance - positionVariance / 2f, 
+					rand.NextSingle() * positionVariance - positionVariance / 2f),
+				new Vector2(
+					rand.NextSingle() * velocityVariance - velocityVariance / 2f, 
+					rand.NextSingle() * velocityVariance - velocityVariance / 2f),
+				GetRandomColor()));
 		}
 
-		system.TimeStep = 1f;
+		system.TimeStep = 0.1f;
 		bool running = true;
 		while (running)
 		{
