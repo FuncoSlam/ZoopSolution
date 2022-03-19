@@ -69,5 +69,10 @@ internal class Renderer
 
 
 		EndDrawing();
+
+		if (WindowShouldClose())
+		{
+			CloseWindow();
+		}
 	}
 }
