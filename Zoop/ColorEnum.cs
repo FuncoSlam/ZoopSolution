@@ -9,15 +9,16 @@ namespace Zoop
 		private static Color[] colors =
 		{
 			Color.BLACK,
-			Color.RAYWHITE,
-			Color.BLUE,
-			Color.DARKBLUE,
-			Color.DARKGRAY,
-			Color.GREEN,
-			Color.RED,
-			Color.VIOLET,
-			Color.GOLD
-		};
+			Color.WHITE,
+            Color.BLUE,
+            Color.GREEN,
+            Color.RED,
+            Color.VIOLET,
+            Color.YELLOW,
+			Color.ORANGE,
+			Color.PINK,
+			Color.MAROON
+        };
 
 		public static Color GetRandomColor()
 		{
