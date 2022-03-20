@@ -16,7 +16,7 @@ internal class Renderer
 
 	static bool isPaused = false;
 
-	static Color backgroundColor = Color.BEIGE;
+	static Color backgroundColor = Color.DARKGRAY;
 	static Renderer()
 	{
 		InitWindow(windowWidth, windowHeight, "Gravity System");
@@ -26,7 +26,7 @@ internal class Renderer
 		EndDrawing();
 	}
 
-	public void Render(List<GravObject> Bodies)
+	public bool Render(List<GravObject> Bodies)
 	{
 		BeginDrawing();
 		ClearBackground(backgroundColor);
@@ -73,6 +73,11 @@ internal class Renderer
 		if (WindowShouldClose())
 		{
 			CloseWindow();
+			return false;
 		}
+        else
+        {
+			return true;
+        }
 	}
 }

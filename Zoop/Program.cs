@@ -38,7 +38,8 @@ class Program
 		while (running)
 		{
 			system.Update();
-			renderer.Render(system.CurrentState);
+			if (!renderer.Render(system.CurrentState))
+				running = false;
 		}
 	}
 }
