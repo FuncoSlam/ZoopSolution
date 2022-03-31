@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using static Zoop.CustomMath;
 using Raylib_cs;
+using System.Diagnostics;
 
 namespace Zoop;
 

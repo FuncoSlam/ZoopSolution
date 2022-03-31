@@ -5,9 +5,9 @@ namespace Zoop;
 internal class GravSystem
 {
 	private List<GravObject> currentState = new();
-	public List<GravObject> CurrentState { get => currentState; }
+	public List<GravObject> CurrentState => currentState;
 	private List<GravObject> futureState = new();
-	public List<GravObject> FutureState { get => futureState; }
+	public List<GravObject> FutureState => futureState;
 
 	private float timeStep = 0.1f;
 	public float TimeStep { set => timeStep = value; get => timeStep; }
