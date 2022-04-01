@@ -79,10 +79,9 @@ internal class GravSystem
 		}
 	}
 
-	List<(int, int)> collisions = new();
 	private List<(int, int)> DetectCollisions()
 	{
-		collisions = new();
+		List<(int, int)> collisions = new();
 		for (int i = 0; i < futureState.Count; i++)
 		{
 			for (int j = i + 1; j < futureState.Count; j++)
@@ -99,10 +98,9 @@ internal class GravSystem
 		return collisions;
 	}
 
-	List<List<int>> collisionClusters = new();
 	private List<List<int>> CreateCollisionClusters(List<(int, int)> Collisions)
 	{
-		collisionClusters = new();
+		List<List<int>> collisionClusters = new();
 		while (Collisions.Count > 0)
 		{
 			bool hit = false;
@@ -137,10 +135,9 @@ internal class GravSystem
 		return collisionClusters;
 	}
 
-	List<GravObject> newBodies = new();
 	private List<GravObject> CreateNewBodies(List<List<int>> CollisionClusters)
 	{
-		newBodies = new();
+		List<GravObject> newBodies = new();
 		for (int i = 0; i < CollisionClusters.Count; i++)
 		{
 			List<int> collision = CollisionClusters[i].Distinct().ToList();
@@ -154,6 +151,7 @@ internal class GravSystem
 		}
 		return newBodies;
 	}
+
 
 	private List<int> GetUniqueBodyIndices(List<List<int>> CollisionClusters)
 	{
