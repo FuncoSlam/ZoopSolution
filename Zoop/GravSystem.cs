@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Collections.Concurrent;
 
 namespace Zoop;
 
@@ -27,7 +28,7 @@ internal class GravSystem
 
 		void AlterVelocityOfObjects()
 		{
-			for (int i = 0; i < currentState.Count; i++)
+			Parallel.For(0, currentState.Count, i =>
 			{
 				for (int j = 0; j < currentState.Count; j++)
 				{
@@ -43,7 +44,7 @@ internal class GravSystem
 					temp.Velocity += deltaV;
 					futureState[i] = temp;
 				}
-			}
+			});
 		}
 
 		void MoveObjectsByVelocity()
@@ -79,10 +80,26 @@ internal class GravSystem
 		}
 	}
 
+
+	struct IndexedBounds
+    {
+		public int Index { get; init; }
+		public float LowBound { get; init; }
+		public float HighBound { get; init; }
+	}
+
 	private List<(int, int)> DetectCollisions()
 	{
-		List<(int, int)> collisions = new();
-		for (int i = 0; i < futureState.Count; i++)
+		/*(int, float)[] sortedBodiesByPosX = (
+			from body
+			in futureState
+			orderby body.Position.X
+			select (futureState.IndexOf(body), body.Position.X + body.Radius)
+			).ToArray();*/
+
+		ConcurrentBag<(int, int)> collisions = new();
+
+		Parallel.For(0, futureState.Count, i =>
 		{
 			for (int j = i + 1; j < futureState.Count; j++)
 			{
@@ -94,8 +111,8 @@ internal class GravSystem
 					collisions.Add((i, j));
 				}
 			}
-		}
-		return collisions;
+		});
+        return collisions.ToList();
 	}
 
 	private List<List<int>> CreateCollisionClusters(List<(int, int)> Collisions)
@@ -129,7 +146,8 @@ internal class GravSystem
 			}
 			if (!hit)
 			{
-				collisionClusters.Add(new List<int> { Collisions[0].Item1, Collisions[0].Item1 });
+				collisionClusters.Add(new List<int> { Collisions[0].Item1, Collisions[0].Item2 });
+				Collisions.RemoveAt(0);
 			}
 		}
 		return collisionClusters;
