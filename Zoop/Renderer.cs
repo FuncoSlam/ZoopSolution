@@ -41,7 +41,11 @@ internal class Renderer
 
 		if (IsMouseButtonDown(MouseButton.MOUSE_MIDDLE_BUTTON))
 			camera.target = GetScreenToWorld2D(mousePosDelta * camSpeed + camera.offset, camera);
+
+		int bodiesInSystem = 0;
+
 #if DEBUG
+		
 		float totalMassInSystem = 0f;
 		Vector2 totalMomentumInSystem = new();
 #endif
@@ -49,7 +53,8 @@ internal class Renderer
 		for (int i = 0; i < Bodies.Count; i++)
 		{
 			GravObject body = Bodies[i];
-
+			
+			bodiesInSystem++;
 #if DEBUG
 			totalMassInSystem += body.Mass;
 			totalMomentumInSystem += body.Velocity * body.Mass;
@@ -63,7 +68,8 @@ internal class Renderer
 			$"Camera Target: ({camera.target.X.ToString("n2")}, {camera.target.Y.ToString("n2")})\n" +
 			$"Mouse Position: ({GetMousePosition().X}, {GetMousePosition().Y})\n" +
 			$"Zoom Level: {camera.zoom.ToString("n2")}\n" +
-			$"FPS: {(isPaused ? "PAUSED" : (1f / GetFrameTime()).ToString("n2"))}\n"
+			$"FPS: {(isPaused ? "PAUSED" : (1f / GetFrameTime()).ToString("n2"))}\n" +
+			$"Bodies in System: {bodiesInSystem}\n" 
 #if DEBUG
 			+ $"Total Mass: {totalMassInSystem}\n" +
 			$"Total Momentum: {totalMomentumInSystem}"
