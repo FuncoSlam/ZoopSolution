@@ -42,6 +42,8 @@ internal class Renderer
 		if (IsMouseButtonDown(MouseButton.MOUSE_MIDDLE_BUTTON))
 			camera.target = GetScreenToWorld2D(mousePosDelta * camSpeed + camera.offset, camera);
 
+		// TODO Mouse Selection of Bodies for Tracking
+
 		int bodiesInSystem = 0;
 
 #if DEBUG
