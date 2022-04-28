@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mono.Options" Version="6.12.0.148" />
     <PackageReference Include="Raylib-cs" Version="4.0.0.1" />
   </ItemGroup>
 
