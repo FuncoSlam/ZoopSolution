@@ -12,14 +12,14 @@ class Program
 		Random rand = new();
 		Renderer renderer = new();
 
-		int objectsToSpawn = 500;
+		int objectsToSpawn = 2000;
 		if (args.Length > 0)
 		{
 			if (int.TryParse(args[0], out int temp))
 				objectsToSpawn = temp;
 		}
 
-		float positionVariance = 5000f;
+		float positionVariance =  (float) Math.Pow(objectsToSpawn, 1/2) * 10000 ;
 		float velocityVariance = 2f;
 		for (int i = 0; i < objectsToSpawn; i++)
 		{
